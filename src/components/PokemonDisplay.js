@@ -2,6 +2,7 @@ import Pokemon from "./Pokemon";
 import { addToTeam } from "./Team";
 import "../style/Pokemon.css";
 
+// Display each Pokemon retrieved from PokeAPI along with a button to add it to the team
 function PokemonDisplay(props) {
     return (
     <div class="item">

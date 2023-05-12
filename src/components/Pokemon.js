@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "../style/Pokemon.css";
 
+/*
+    Display a Pokemon using information retrieved from the given API url
+*/
 function Pokemon(props) {
+    // useState variables to store a Pokemon's info
     const [id, setId] = useState(-1);
     const [height, setHeight] = useState(-1);
     const [weight, setWeight] = useState(-1);
@@ -13,6 +17,7 @@ function Pokemon(props) {
     let height_str = "Height: " + height * 10 + "cm";
     let weight_str = "Weight: " + weight / 10 + "kg";
 
+    // Retrieves data from the API and updates appropriate variables
     const APICall = async () => {
         const response = await fetch(props.url);
         const responseJSON = await response.json();
@@ -32,6 +37,7 @@ function Pokemon(props) {
         APICall()
     });
 
+    // Return formatted info about the pokemon
     return (<>
         <img src={img_link} alt="Pokemon Home Model" class={primary_type}/>
         <p class={primary_type}>

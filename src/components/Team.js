@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { database } from "../database.js";
-import { get, set, update, onValue, remove, ref } from 'firebase/database';
+import { set, update, onValue, remove, ref } from 'firebase/database';
 import PokemonTeam from "./PokemonTeam.js";
 
+// Add the given pokemon to the firebase team
 export function addToTeam(pokemon_name, pokemon_url) {
     const dataRef = ref(database, '/Team/nums_available');
     let id = -1;
+    // Check for an open slot in the team
     onValue(dataRef, (snap) => {
         for (let key in snap.val()) {
             if (snap.val()[key].val) {
@@ -15,17 +17,19 @@ export function addToTeam(pokemon_name, pokemon_url) {
         }
     });
 
-    if (id < 0) {
+    if (id < 0) { // No slots open
         console.log("Team is full");
         return;
     }
 
+    // Pokemon data to send to Firebase
     let pokemon = {
         name: pokemon_name,
         url: pokemon_url,
         id: id,
     }
 
+    // Add pokemon to the team
     const pokemonRef = ref(database, '/Team/mon' + id);
     set(pokemonRef, pokemon)
     .then( () => {
@@ -36,6 +40,7 @@ export function addToTeam(pokemon_name, pokemon_url) {
         console.log(error);
     });
 
+    // Update id as unavailable
     const idRef = ref(database, 'Team/nums_available/' + id);
     update(idRef, {val:false})
     .then( () => {
@@ -46,6 +51,7 @@ export function addToTeam(pokemon_name, pokemon_url) {
     });
 }
 
+// Remove a Pokemon from the Firebase database based on their id number
 export function removeFromTeam(id) {
     const pokemonRef = ref(database, 'Team/mon' + id);
     remove(pokemonRef)
@@ -66,6 +72,7 @@ export function removeFromTeam(id) {
     })
 }
 
+// Display the array of Pokemon currently on the team retrived from Firebase
 export function Team() {
     const [teamComponents, setTeamComponents] = useState([]);
     

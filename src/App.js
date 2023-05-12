@@ -7,6 +7,10 @@ function App() {
   const [pokemonComponents, setComponents] = useState();
   const [limit, setLimit] = useState(10);
 
+  /*
+    Make a request from PokeAPI based on the current limit
+    Create an array of Pokemon components using the results of that API get request
+  */
   const getPokemonList = async () => {
     const url = "https://pokeapi.co/api/v2/pokemon?limit=" + limit + "&offset=0";
     const response = await fetch(url);
@@ -16,6 +20,7 @@ function App() {
     setComponents(components);
   }
 
+  // Increment limit up on each button press, display 10 more Pokemon
   const incrementLimit = () => {
     setLimit(limit + 10);
   }
